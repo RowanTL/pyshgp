@@ -55,7 +55,7 @@ class PushType:
 
     def __init__(self,
                  name: str,
-                 python_types: Tuple[type, ...],
+                 python_types: Tuple[type, ...], # https://stackoverflow.com/questions/772124/what-does-the-ellipsis-object-do
                  is_collection: bool = False,
                  is_numeric: bool = False):
         self.name = name
