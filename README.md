@@ -1,3 +1,7 @@
+# TODO
+
+Add sliding window
+
 # PyshGP
 
 [![PyPI version](https://badge.fury.io/py/pyshgp.svg)](https://badge.fury.io/py/pyshgp)
