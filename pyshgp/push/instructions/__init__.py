@@ -4,7 +4,7 @@ from itertools import chain
 
 from pyshgp.push.type_library import PushTypeLibrary
 from pyshgp.push.instruction import Instruction
-from pyshgp.push.instructions import common, numeric, text, code, io, logical, vector
+from pyshgp.push.instructions import common, numeric, text, code, io, logical, vector, memory
 
 
 def _supported(instructions: Sequence[Instruction], supported_stacks: Set[str]) -> Sequence[Instruction]:
@@ -26,7 +26,7 @@ def generic_instructions(type_library: PushTypeLibrary) -> List[Instruction]:
 def core_instructions(type_library: PushTypeLibrary) -> Sequence[Instruction]:
     """All instructions defined by pyshgp for the given type library."""
     supported_stacks = type_library.supported_stacks()
-    instruction_modules = [numeric, text, logical, code, vector]
+    instruction_modules = [numeric, text, logical, code, vector, memory]
     basic_instr = list(chain(*[m.instructions(type_library) for m in instruction_modules]))
     gen_instrs = generic_instructions(type_library)
     supported_instructions = _supported(basic_instr + gen_instrs, supported_stacks)
