@@ -12,6 +12,7 @@ from pyshgp.push.atoms import Atom, Closer, Literal, InstructionMeta, CodeBlock,
 from pyshgp.push.config import PushConfig
 from pyshgp.tap import tap
 from pyshgp.validation import PushError
+from pyshgp.push.accessible import memory_arr
 
 
 class PushInterpreterStatus(Enum):
@@ -47,7 +48,8 @@ class PushInterpreter:
 
     def __init__(self,
                  instruction_set: Union[InstructionSet, str] = "core",
-                 reset_on_run: bool = True):
+                 reset_on_run: bool = True,
+                 memory_dementia: int = 0):
         self.reset_on_run = reset_on_run
         # If no instruction set given, create one and register all instructions.
         if instruction_set == "core":
@@ -60,6 +62,7 @@ class PushInterpreter:
         # Initialize the PushState and status
         self.state: PushState = None
         self.status: PushInterpreterStatus = None
+        self.memory_dementia = memory_dementia
         self._validate()
 
     def _validate(self):
@@ -178,6 +181,10 @@ class PushInterpreter:
             if time.time() > stop_time:
                 self.status = PushInterpreterStatus.runtime_limit_exceeded
                 break
+
+            if steps % self.memory_dementia == 0 and self.memory_dementia != 0:
+                for index in range(len(memory_arr)):
+                    memory_arr[index] = 0
 
             # Next atom in the program to evaluate.
             next_atom = self.state["exec"].pop()
