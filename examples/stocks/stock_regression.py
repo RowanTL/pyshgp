@@ -23,6 +23,7 @@ from pyshgp.gp.estimators import PushEstimator
 from pyshgp.gp.genome import GeneSpawner
 from pyshgp.gp.selection import Lexicase
 from pyshgp.push.instruction_set import InstructionSet
+from pyshgp.push.interpreter import PushInterpreter
 
 intc_data: pd.DataFrame = pd.read_csv("intc_data.csv")
 y = intc_data["Open"].to_numpy().reshape([-1, 1])
@@ -35,7 +36,15 @@ desired_instructions=[
     "float_sub",
     "float_div",
     "mem_float_add",
-    "mem_float_mult"
+    "mem_float_mult",
+    "mem_write_float",
+    "mem_read_float",
+    "float_mod",
+    "float_max",
+    "float_dec",
+    "float_sin",
+    "float_cos",
+    "float_tan"
 ]
 
 for instruction in desired_instructions:
@@ -54,6 +63,7 @@ spawner = GeneSpawner(
 
 
 ep_lex_sel = Lexicase(epsilon=True)
+interpreter: PushInterpreter = PushInterpreter(memory_dementia=20)
 
 
 if __name__ == "__main__":
@@ -64,7 +74,8 @@ if __name__ == "__main__":
         spawner=spawner,
         selector=ep_lex_sel,
         verbose=2,
-        memory_size=10
+        memory_size=10,
+        interpreter=interpreter
     )
 
     est.fit(X=X, y=y)
