@@ -192,7 +192,7 @@ class DatasetEvaluator(Evaluator):
             expected = self.y.iloc[ndx].to_list()
             actual = self.interpreter.run(program, inputs)
             errors.append(self.default_error_function(actual, expected))
-            if ndx % dementia_amt == 0 and dementia_amt != 0:
+            if dementia_amt != 0 and ndx % dementia_amt == 0:
                 for index in range(len(memory_arr)):
                     memory_arr[index] = 0
         return np.array(errors).flatten()
