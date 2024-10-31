@@ -26,8 +26,12 @@ from pyshgp.push.instruction_set import InstructionSet
 from pyshgp.push.interpreter import PushInterpreter
 
 intc_data: pd.DataFrame = pd.read_csv("intc_data.csv")
-y = intc_data["Open"].to_numpy().reshape([-1, 1])
-X = np.arange(0, len(y)).reshape([-1, 1])
+inputs = intc_data["Open"].to_numpy()[:-1]
+outputs = intc_data["Open"].to_numpy()[1:]
+y = outputs.reshape([-1, 1])
+X = inputs.reshape([-1, 1])
+# y = intc_data["Open"].to_numpy().reshape([-1, 1])
+# X = np.arange(0, len(y)).reshape([-1, 1])
 
 instruction_set = InstructionSet()
 desired_instructions=[
@@ -63,19 +67,19 @@ spawner = GeneSpawner(
 
 
 ep_lex_sel = Lexicase(epsilon=True)
-interpreter: PushInterpreter = PushInterpreter(memory_dementia=20)
+# interpreter: PushInterpreter = PushInterpreter(memory_dementia=20)
 
 
 if __name__ == "__main__":
     est = PushEstimator(
         population_size=300,
-        max_generations=50,
+        max_generations=10,
         simplification_steps=500,
         spawner=spawner,
         selector=ep_lex_sel,
         verbose=2,
         memory_size=10,
-        interpreter=interpreter
+        # interpreter=interpreter
     )
 
     est.fit(X=X, y=y)
