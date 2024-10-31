@@ -8,7 +8,7 @@ import pandas as pd
 from pyshgp.push.interpreter import PushInterpreter, Program
 from pyshgp.tap import tap
 from pyshgp.utils import Token
-from pyshgp.push.accessible import memory_arr
+from pyshgp.push.accessible import memory_arr, dementia_amt
 
 
 def damerau_levenshtein_distance(a: Union[str, Sequence], b: Union[str, Sequence]) -> int:
@@ -192,8 +192,9 @@ class DatasetEvaluator(Evaluator):
             expected = self.y.iloc[ndx].to_list()
             actual = self.interpreter.run(program, inputs)
             errors.append(self.default_error_function(actual, expected))
-            for index in range(len(memory_arr)):
-                memory_arr[index] = 0
+            if ndx % dementia_amt == 0 and dementia_amt != 0:
+                for index in range(len(memory_arr)):
+                    memory_arr[index] = 0
         return np.array(errors).flatten()
 
 
