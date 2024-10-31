@@ -8,17 +8,17 @@ from pyshgp.push.instructions.numeric import _add, _mult
 from pyshgp.push.accessible import memory_arr
 
 def _mem_write(index, value):
-    idx = int(abs(index % len(memory_arr)))
+    idx = int(abs(index) % len(memory_arr))
     ret_val = memory_arr[idx]
     return ret_val,
 
 def _mem_read(index):
-    idx = int(abs(index % len(memory_arr)))
+    idx = int(abs(index) % len(memory_arr))
     ret_val = memory_arr[idx]
     return memory_arr[idx],
 
 def _mem_add(index, value):
-    idx = int(abs(index % len(memory_arr)))
+    idx = int(abs(index) % len(memory_arr))
     # return the value in memory prior to
     # updating it as specified by
     # agapitos2016
@@ -27,7 +27,7 @@ def _mem_add(index, value):
     return ret_val,
 
 def _mem_mult(index, value):
-    idx = int(abs(index % len(memory_arr)))
+    idx = int(abs(index) % len(memory_arr))
     ret_val = memory_arr[idx]
     memory_arr[idx] = memory_arr[idx] * value
     return ret_val,
