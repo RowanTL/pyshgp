@@ -112,6 +112,13 @@ class MemoryInstruction(Instruction):
         if Token.no_stack_item in args:
             return push_state
 
+        # https://stackoverflow.com/a/44154660
+        if float('nan') in args:
+            push_state.pop_from_stacks(self.input_stacks)
+            return push_state
+
+        # This is here to make this instruction useless if there
+        # is no memory
         if not memory_arr:
             return push_state
 
@@ -206,6 +213,11 @@ class SimpleInstruction(Instruction):
         # Pull args, if present.
         args = push_state.observe_stacks(self.input_stacks)
         if Token.no_stack_item in args:
+            return push_state
+
+        # https://stackoverflow.com/a/44154660
+        if float('nan') in args:
+            push_state.pop_from_stacks(self.input_stacks)
             return push_state
 
         # Compute result, return if revert or response too big.
