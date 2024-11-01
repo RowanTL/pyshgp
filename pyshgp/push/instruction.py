@@ -113,9 +113,9 @@ class MemoryInstruction(Instruction):
             return push_state
 
         # https://stackoverflow.com/a/44154660
-        if float('nan') in args:
-            push_state.pop_from_stacks(self.input_stacks)
-            return push_state
+        # if float('nan') in args:
+            # push_state.pop_from_stacks(self.input_stacks)
+            # return push_state
 
         # This is here to make this instruction useless if there
         # is no memory
