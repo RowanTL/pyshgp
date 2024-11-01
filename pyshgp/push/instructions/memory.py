@@ -23,13 +23,15 @@ def _mem_add(index, value):
     # updating it as specified by
     # agapitos2016
     ret_val = memory_arr[idx]
-    memory_arr[idx] = memory_arr[idx] + value
+    new_val = memory_arr[idx] * value
+    memory_arr[idx] = new_val
     return ret_val,
 
 def _mem_mult(index, value):
     idx = int(abs(index) % len(memory_arr))
     ret_val = memory_arr[idx]
-    memory_arr[idx] = memory_arr[idx] * value
+    new_val = memory_arr[idx] * value
+    memory_arr[idx] = new_val
     return ret_val,
 
 def instructions(type_library: PushTypeLibrary):
@@ -48,7 +50,7 @@ def instructions(type_library: PushTypeLibrary):
             input_stacks=[push_type, push_type],
             output_stacks=[push_type],
             code_blocks=0,
-            docstring="C"
+            docstring="Returns original value of index, then adds the float stored at index" 
         ))
 
         i.append(MemoryInstruction(
@@ -57,7 +59,7 @@ def instructions(type_library: PushTypeLibrary):
             input_stacks=[push_type, push_type],
             output_stacks=[push_type],
             code_blocks=0,
-            docstring="Calls numeric _mult but with some memory shenanigans in MemoryInterpreter"             
+            docstring="Returns original value of index, then multiplies the float stored at index" 
         ))
 
         i.append(MemoryInstruction(
