@@ -188,15 +188,21 @@ class DatasetEvaluator(Evaluator):
         """
         super().evaluate(program)
         errors = []
+        is_memory_interpreter = True if isinstance(self.interpreter, MemoryInterpreter) else False
         for ndx in range(self.X.shape[0]):
             inputs = self.X.iloc[ndx].to_list()
             expected = self.y.iloc[ndx].to_list()
             actual = self.interpreter.run(program, inputs)
             errors.append(self.default_error_function(actual, expected))
-            if isinstance(self.interpreter, MemoryInterpreter):
+            if is_memory_interpreter:
                 if self.interpreter.dementia_amt != 0 and ndx % self.interpreter.dementia_amt == 0:
                     for index in range(len(self.interpreter.memory)):
                         self.interpreter.memory[index] = 0
+        
+        if is_memory_interpreter:
+            for index in range(len(self.interpreter.memory)):
+                self.interpreter.memory[index] = 0
+                
         return np.array(errors).flatten()
 
 
