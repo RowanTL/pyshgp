@@ -76,3 +76,4 @@ venv.bak/
 
 # Editor Files
 .idea
+.vscode
