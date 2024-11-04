@@ -2,6 +2,7 @@
 
 - There is a huge bug with NaN breaking everything at the moment.
 - Add sliding window.
+- Look at pypy 3.10 implementation. A 4.4x speed increase sounds really cool.
 
 ### NaN bug
 
