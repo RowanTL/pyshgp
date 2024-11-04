@@ -3,9 +3,9 @@
 - There is a huge bug with NaN breaking everything at the moment.
 - Add sliding window.
 
-## NaN bug
+### NaN bug
 
-THe problem is due to math.inf operations generating NaN values. There are a few operations that cause NaN values to
+The problem is due to math.inf operations generating NaN values. There are a few operations that cause NaN values to
 be generated:
 
 1. math.inf - math.inf
@@ -13,7 +13,7 @@ be generated:
 3. math.inf / math.inf
 4. math.inf * 0
 
-Solutions:
+Solutions (Any other ideas would be nice):
 - Set a limit on how high the floats can ge (exploding gradient problem?)
 
 # PyshGP
