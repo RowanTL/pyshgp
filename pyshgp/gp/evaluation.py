@@ -10,7 +10,7 @@ from pyshgp.tap import tap
 from pyshgp.utils import Token
 
 
-def damerau_levenshtein_distance(a: Union[str, Sequence], b: Union[str, Sequence]) -> int:
+def damerau_levenshtein_distance(a: str | Sequence, b: str | Sequence) -> int:
     """Damerau-Levenshtein Distance that works for both strings and lists.
 
     https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance.
