@@ -1,13 +1,22 @@
-"""Definitions for all memory instructions."""
+"""
+Definitions for all memory instructions.
+
+A sigmoid function is applied to the writing aspect
+of these functions. 
+"""
 
 
 from pyshgp.push.type_library import PushTypeLibrary
 from pyshgp.push.instruction import MemoryInstruction
+from math import tanh
+
+def sigmoid(num: float) -> float:
+    return 1 / (1 + abs(num))
 
 def _mem_write(index, value, memory_arr):
     idx = int(abs(index) % len(memory_arr))
     ret_val = memory_arr[idx]
-    memory_arr[idx] = value
+    memory_arr[idx] = tanh(value)
     return ret_val,
 
 def _mem_read(index, memory_arr):
@@ -22,14 +31,14 @@ def _mem_add(index, value, memory_arr):
     # agapitos2016
     ret_val = memory_arr[idx]
     new_val = memory_arr[idx] + value
-    memory_arr[idx] = new_val
+    memory_arr[idx] = tanh(new_val)
     return ret_val,
 
 def _mem_mult(index, value, memory_arr):
     idx = int(abs(index) % len(memory_arr))
     ret_val = memory_arr[idx]
     new_val = memory_arr[idx] * value
-    memory_arr[idx] = new_val
+    memory_arr[idx] = tanh(new_val)
     return ret_val,
 
 def instructions(type_library: PushTypeLibrary):
