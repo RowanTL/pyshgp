@@ -1,5 +1,6 @@
 # TODO
 
+There is a huge bug with NaN breaking everything at the moment
 Add sliding window
 
 # PyshGP
