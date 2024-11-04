@@ -124,7 +124,7 @@ class MemoryInstruction(Instruction):
         result = self.f(*args, memory_arr=memory_arr)
         if result is Token.revert:
             return push_state
-        _check_is_seq(result, self)        
+        _check_is_seq(result, self)
 
         push_state.pop_from_stacks(self.input_stacks)
         push_state.push_to_stacks(result, self.output_stacks)
@@ -212,11 +212,6 @@ class SimpleInstruction(Instruction):
         # Pull args, if present.
         args = push_state.observe_stacks(self.input_stacks)
         if Token.no_stack_item in args:
-            return push_state
-
-        # https://stackoverflow.com/a/44154660
-        if float('nan') in args:
-            push_state.pop_from_stacks(self.input_stacks)
             return push_state
 
         # Compute result, return if revert or response too big.
