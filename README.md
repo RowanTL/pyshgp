@@ -3,6 +3,19 @@
 - There is a huge bug with NaN breaking everything at the moment.
 - Add sliding window.
 
+## NaN bug
+
+THe problem is due to math.inf operations generating NaN values. There are a few operations that cause NaN values to
+be generated:
+
+1. math.inf - math.inf
+2. math.inf + -math.inf
+3. math.inf / math.inf
+4. math.inf * 0
+
+Solutions:
+- Set a limit on how high the floats can ge (exploding gradient problem?)
+
 # PyshGP
 
 [![PyPI version](https://badge.fury.io/py/pyshgp.svg)](https://badge.fury.io/py/pyshgp)
