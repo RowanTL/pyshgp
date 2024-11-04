@@ -14,7 +14,6 @@ from pyshgp.push.program import ProgramSignature
 from pyshgp.tap import tap, set_verbosity
 from pyshgp.utils import list_rindex
 from pyshgp.validation import check_is_fitted, check_X_y
-from pyshgp.push.accessible import memory_arr, dementia_amt
 
 
 class PushEstimator:
@@ -79,8 +78,6 @@ class PushEstimator:
                  parallelism: Union[int, bool] = False,
                  push_config: PushConfig = "default",
                  verbose: int = 0,
-                 memory_size: int = 0,
-                 passed_dementia_amt: int = 0,
                  **kwargs):
         self._search_name = search
         self.spawner = spawner
@@ -95,10 +92,6 @@ class PushEstimator:
         self.verbose = verbose
         self.ext = kwargs
         set_verbosity(self.verbose)
-
-        dementia_amt = passed_dementia_amt
-        for _ in range(memory_size):
-            memory_arr.append(0)
 
         # Initialize attributes that will be set later.
         self.evaluator = None

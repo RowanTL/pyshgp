@@ -2,32 +2,30 @@
 
 
 from pyshgp.push.type_library import PushTypeLibrary
-from pyshgp.push.instruction import SimpleInstruction, MemoryInstruction
-from pyshgp.utils import Token
-from pyshgp.push.instructions.numeric import _add, _mult
-from pyshgp.push.accessible import memory_arr
+from pyshgp.push.instruction import MemoryInstruction
 
-def _mem_write(index, value):
+def _mem_write(index, value, memory_arr):
+    idx = int(abs(index) % len(memory_arr))
+    ret_val = memory_arr[idx]
+    memory_arr[idx] = value
+    return ret_val,
+
+def _mem_read(index, memory_arr):
     idx = int(abs(index) % len(memory_arr))
     ret_val = memory_arr[idx]
     return ret_val,
 
-def _mem_read(index):
-    idx = int(abs(index) % len(memory_arr))
-    ret_val = memory_arr[idx]
-    return memory_arr[idx],
-
-def _mem_add(index, value):
+def _mem_add(index, value, memory_arr):
     idx = int(abs(index) % len(memory_arr))
     # return the value in memory prior to
     # updating it as specified by
     # agapitos2016
     ret_val = memory_arr[idx]
-    new_val = memory_arr[idx] * value
+    new_val = memory_arr[idx] + value
     memory_arr[idx] = new_val
     return ret_val,
 
-def _mem_mult(index, value):
+def _mem_mult(index, value, memory_arr):
     idx = int(abs(index) % len(memory_arr))
     ret_val = memory_arr[idx]
     new_val = memory_arr[idx] * value

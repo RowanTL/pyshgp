@@ -9,13 +9,10 @@ from functools import partial
 from pyshgp.gp.individual import Individual
 from pyshgp.gp.evaluation import Evaluator
 from pyshgp.tap import tap
-from pyshgp.push.accessible import memory_arr
 
 
 def _eval_indiv(indiv: Individual, evalr: Evaluator, ):
     indiv.error_vector = evalr.evaluate(indiv.program)
-    for idx in range(len(memory_arr)):
-        memory_arr[idx] = 0
     return indiv
 
 

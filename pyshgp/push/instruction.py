@@ -7,7 +7,6 @@ from pyshgp.push.config import PushConfig
 from pyshgp.push.type_library import RESERVED_PSEUDO_STACKS
 from pyshgp.push.state import PushState
 from pyshgp.utils import Token
-from pyshgp.push.accessible import memory_arr
 
 
 class Instruction(ABC):
@@ -107,7 +106,7 @@ class MemoryInstruction(Instruction):
         self.input_stacks = input_stacks
         self.output_stacks = output_stacks
 
-    def evaluate(self, push_state: PushState, push_config: PushConfig = None) -> PushState:
+    def evaluate(self, push_state: PushState, memory_arr: list[float | int], push_config: PushConfig = None) -> PushState:
         args = push_state.observe_stacks(self.input_stacks)
         if Token.no_stack_item in args:
             return push_state
@@ -122,7 +121,7 @@ class MemoryInstruction(Instruction):
         if not memory_arr:
             return push_state
 
-        result = self.f(*args)
+        result = self.f(*args, memory_arr=memory_arr)
         if result is Token.revert:
             return push_state
         _check_is_seq(result, self)        

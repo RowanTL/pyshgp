@@ -15,7 +15,6 @@ This problem attempts to synthesize a program that computes the output of both
 the ReLU and LeakyReLU functions.
 
 """
-import numpy as np
 import random
 import pandas as pd
 
@@ -23,11 +22,11 @@ from pyshgp.gp.estimators import PushEstimator
 from pyshgp.gp.genome import GeneSpawner
 from pyshgp.gp.selection import Lexicase
 from pyshgp.push.instruction_set import InstructionSet
-from pyshgp.push.interpreter import PushInterpreter
+from pyshgp.push.interpreter import PushInterpreter, MemoryInterpreter
 
-intc_data: pd.DataFrame = pd.read_csv("intc_data.csv")
-inputs = intc_data["Open"].to_numpy()[:-1]
-outputs = intc_data["Open"].to_numpy()[1:]
+intc_data: pd.DataFrame = pd.read_csv("/home/user/Documents/CS6401/pyshgp/examples/stocks/intc_data.csv")
+inputs = intc_data["Close"].to_numpy()[:-1]
+outputs = intc_data["Close"].to_numpy()[1:]
 y = outputs.reshape([-1, 1])
 X = inputs.reshape([-1, 1])
 # y = intc_data["Open"].to_numpy().reshape([-1, 1])
@@ -54,6 +53,9 @@ desired_instructions=[
 for instruction in desired_instructions:
     instruction_set.register_core_by_name(instruction)
 
+def random_float() -> float:
+    return float(random.randint(-10, 10))
+
 spawner = GeneSpawner(
     n_inputs=1,
     # instruction_set=InstructionSet().register_core_by_stack({"float"}),
@@ -61,25 +63,28 @@ spawner = GeneSpawner(
     literals=[],
     erc_generators=[
         # lambda: float(random.randint(0, 10)),
-        lambda: round(random.uniform(0, 5), 1),
+        #lambda: float(random.randint(-10, 10)),
+        random_float,
     ]
 )
 
 
 ep_lex_sel = Lexicase(epsilon=True)
-# interpreter: PushInterpreter = PushInterpreter(memory_dementia=20)
+interpreter: MemoryInterpreter = MemoryInterpreter(memory_size=10)# , dementia_amt=20)
 
 
 if __name__ == "__main__":
     est = PushEstimator(
         population_size=300,
-        max_generations=10,
+        max_generations=100,
         simplification_steps=500,
         spawner=spawner,
         selector=ep_lex_sel,
         verbose=2,
-        memory_size=10,
-        # interpreter=interpreter
+        #memory_size=10,
+        interpreter=interpreter,
+        #passed_dementia_amt=20,
+        parallelism=True,
     )
 
     est.fit(X=X, y=y)
