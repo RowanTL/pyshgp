@@ -1,21 +1,17 @@
 # TODO
 
-- There is a huge bug with NaN breaking everything at the moment.
 - Add sliding window.
 - Look at pypy 3.10 implementation. A 4.4x speed increase sounds really cool.
+- Get updated documentation website running (how tf to do this btw)
+- Look at using the int stack for indexed memory rather than taking values off of the float stack
+  - Would mandate the use of integer instructions.
 
-### NaN bug
+# Changes
 
-The problem is due to math.inf operations generating NaN values. There are a few operations that cause NaN values to
-be generated:
+These are changes from the original pyshgp.
 
-1. math.inf - math.inf
-2. math.inf + -math.inf
-3. math.inf / math.inf
-4. math.inf * 0
-
-Solutions (Any other ideas would be nice):
-- Set a limit on how high the floats can ge (exploding gradient problem?)
+- Added memory, parameters in the memory interpreter
+  - 
 
 # PyshGP
 
