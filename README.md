@@ -10,8 +10,7 @@
 
 These are changes from the original pyshgp.
 
-- Added memory, parameters in the memory interpreter
-  - 
+- Added memory, parameters in the memory interpreter 
 
 # PyshGP
 
