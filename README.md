@@ -2,9 +2,11 @@
 
 - Add sliding window.
 - Look at pypy 3.10 implementation. A 4.4x speed increase sounds really cool.
-- Get updated documentation website running (how tf to do this btw)
+- ~~Get updated documentation website running~~
 - Look at using the int stack for indexed memory rather than taking values off of the float stack
   - Would mandate the use of integer instructions.
+- Add search algorithm documentation to the bottom of https://rowantl.github.io/pyshgp/html/configuration.html
+- Move todo to its own file
 
 # Changes
 
