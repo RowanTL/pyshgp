@@ -18,6 +18,7 @@ What is changed in this fork?
 # Warning
 
 The master branch is not meant to be stable. I am constantly updating this repo with changes that may or may not function.
+Later, when more features are added and more kinks are hammered out, the repo will switch to a more stable release model.
 
 # PyshGP
 
