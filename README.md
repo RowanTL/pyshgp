@@ -10,9 +10,14 @@
 
 # Changes
 
-These are changes from the original pyshgp.
+What is changed in this fork?
 
+- Fixed to support python 3.12
 - Added memory, parameters in the memory interpreter 
+
+# Warning
+
+The master branch is not meant to be stable. I am constantly updating this repo with changes that may or may not function.
 
 # PyshGP
 
