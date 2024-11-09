@@ -7,6 +7,7 @@
   - Would mandate the use of integer instructions.
 - Add search algorithm documentation to the bottom of https://rowantl.github.io/pyshgp/html/configuration.html
 - Move todo to its own file
+- Implement random down sampling lexicase selection
 
 # Changes
 
