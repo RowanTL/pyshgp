@@ -38,7 +38,7 @@ for num in range(0, len(btc_usd_data) - sliding_window_size - 1):
         X[num].append(row.Close)
         X[num].append(row.High)
         X[num].append(row.Low)
-        X[num].append(row.Volume)
+        X[num].append(float(row.Volume))
         y.append(btc_usd_data["Close"][num+sliding_window_size+1])
 
 y = np.array(y).reshape(-1, 1)
