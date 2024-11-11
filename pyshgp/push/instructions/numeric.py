@@ -84,11 +84,17 @@ def _to_float(x):
 
 
 def _log2(x):
-    return log2(x),
+    print(f"log2, x={x}")
+    if x == 0:
+        return Token.revert
+    return log2(abs(x)),
 
 
 def _log_base(x, base):
-    return log(x, base),
+    print(f"log_base, x={x}, base={base}")
+    if x == 0 or base == 0:
+        return Token.revert
+    return log(abs(x), abs(base)),
 
 
 def _exp(x):
@@ -96,11 +102,18 @@ def _exp(x):
 
 
 def _sqrt(x):
-    return sqrt(x),
+    return sqrt(abs(x)),
 
 
 def _pow(x, exponent):
+    print(f"pow, x={x}, exponent={exponent}")
     return x ** exponent,
+
+
+def _inv(x):
+    if x == 0:
+        return Token.revert
+    return 1 / x,
 
 
 def instructions(type_library: PushTypeLibrary):
@@ -124,6 +137,15 @@ def instructions(type_library: PushTypeLibrary):
             output_stacks=[push_type],
             code_blocks=0,
             docstring=f"Takes the log base 2 of {push_type}"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_inv",
+            _inv,
+            input_stacks=[push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes the inverse of {push_type}"
         ))
 
         i.append(SimpleInstruction(
