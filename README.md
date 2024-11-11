@@ -1,5 +1,7 @@
 # TODO
 
+- Multiple types for memory (float, int, and maybe bool if required)
+- Add stack memory alongside index memory
 - Add sliding window.
 - Look at pypy 3.10 implementation. A 4.4x speed increase sounds really cool.
 - ~~Get updated documentation website running~~
