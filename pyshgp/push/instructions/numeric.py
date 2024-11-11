@@ -4,6 +4,7 @@ import math
 from pyshgp.push.type_library import PushTypeLibrary
 from pyshgp.push.instruction import SimpleInstruction
 from pyshgp.utils import Token
+from math import log, log2, exp, sqrt
 
 
 def _add(a, b):
@@ -82,6 +83,26 @@ def _to_float(x):
     return float(x),
 
 
+def _log2(x):
+    return log2(x),
+
+
+def _log_base(x, base):
+    return log(x, base),
+
+
+def _exp(x):
+    return exp(x),
+
+
+def _sqrt(x):
+    return sqrt(x),
+
+
+def _pow(x, exponent):
+    return x ** exponent,
+
+
 def instructions(type_library: PushTypeLibrary):
     """Return all core numeric instructions."""
     i = []
@@ -94,6 +115,51 @@ def instructions(type_library: PushTypeLibrary):
             output_stacks=[push_type],
             code_blocks=0,
             docstring="Adds the top two {t}s and pushes the result.".format(t=push_type)
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_log2",
+            _log2,
+            input_stacks=[push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes the log base 2 of {push_type}"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_log_base",
+            _log_base,
+            input_stacks=[push_type, push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes the log base # of {push_type}"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_exp",
+            _exp,
+            input_stacks=[push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes e ^ {push_type} and pushes the result"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_sqrt",
+            _sqrt,
+            input_stacks=[push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes the sqrt of {push_type} and pushes the result"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_pow",
+            _pow,
+            input_stacks=[push_type, push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"{push_type} ^ {push_type}"
         ))
 
         i.append(SimpleInstruction(
