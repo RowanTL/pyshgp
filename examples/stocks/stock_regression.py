@@ -1,21 +1,3 @@
-"""The ReLU function is a common activation function used in artifical neural netoworks.
-
-```
-relu(x) = max(0, x)
-```
-
-The Leaky ReLU function is a variant of the ReLU function designed to avoid
-having nodes "die". Its definition is as follows.
-
-```
-leaky_relu(x) = max(0.1x, x)
-```
-
-This problem attempts to synthesize a program that computes the output of both
-the ReLU and LeakyReLU functions.
-
-"""
-
 import random
 import pandas as pd
 import numpy as np
@@ -73,7 +55,8 @@ desired_instructions = [
     "float_log_base",
     "float_exp",
     "float_sqrt",
-    "float_pow"
+    # "float_pow",
+    "float_inv",
 ]
 
 for instruction in desired_instructions:
