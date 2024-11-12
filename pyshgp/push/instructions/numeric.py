@@ -84,30 +84,51 @@ def _to_float(x):
 
 
 def _log2(x):
-    print(f"log2, x={x}")
     if x == 0:
         return Token.revert
+    result = log2(abs(x))
     return log2(abs(x)),
 
 
 def _log_base(x, base):
-    print(f"log_base, x={x}, base={base}")
-    if x == 0 or base == 0:
+    if x == 0 or base == 0 or base == 1 or base == -1:
         return Token.revert
-    return log(abs(x), abs(base)),
+    result = log(abs(x), abs(base))
+    return result,
 
 
 def _exp(x):
-    return exp(x),
+    try:
+        result = exp(x)
+    except OverflowError:
+        return Token.revert
+    return result,
 
 
 def _sqrt(x):
     return sqrt(abs(x)),
 
 
-def _pow(x, exponent):
-    print(f"pow, x={x}, exponent={exponent}")
-    return x ** exponent,
+# There is a bunch of nonsense to deal with mathematically
+# when rasing one float to the power of another
+# Just don't deal with it at all lol
+"""def _pow(x, exponent):
+    try:
+        if exponent < 1 and exponent > 0:
+            x = abs(x)
+        result = x ** exponent
+    except OverflowError:
+        return Token.revert
+    except ZeroDivisionError:
+        # happens when 0 ^ (negative number)
+        return Token.revert
+    if isinstance(result, complex):
+        # not sure this is the best option but will do for now
+        # talk about this in class later.
+        # TODO: Create a fix for this
+        print(f"complex number found, x:{x}, exponent:{exponent}")
+        return Token.revert
+    return result,"""
 
 
 def _inv(x):
@@ -175,14 +196,15 @@ def instructions(type_library: PushTypeLibrary):
             docstring=f"Takes the sqrt of {push_type} and pushes the result"
         ))
 
-        i.append(SimpleInstruction(
+        """
+       i.append(SimpleInstruction(
             f"{push_type}_pow",
             _pow,
             input_stacks=[push_type, push_type],
             output_stacks=[push_type],
             code_blocks=0,
             docstring=f"{push_type} ^ {push_type}"
-        ))
+        ))"""
 
         i.append(SimpleInstruction(
             "{t}_sub".format(t=push_type),
