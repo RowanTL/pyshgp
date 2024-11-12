@@ -214,7 +214,7 @@ class MemoryInterpreter(PushInterpreter):
                  memory_size: int = 10,
                  dementia_amt: int = 0):
         """
-        This class is built to add memory on top of the MemoryInterpreter
+        This class is built to add memory on top of the PushInterpreter
         """
         super().__init__(instruction_set, reset_on_run)
         self.memory = [0] * memory_size
