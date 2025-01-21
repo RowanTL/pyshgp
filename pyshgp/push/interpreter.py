@@ -3,6 +3,7 @@ import traceback
 from typing import Union
 import time
 from enum import Enum
+from copy import deepcopy
 
 from pyshgp.push.instruction import Instruction
 from pyshgp.push.program import Program
@@ -204,3 +205,96 @@ class PushInterpreter:
             print("Finished program evaluation.")
 
         return self.state.observe_stacks(program.signature.output_stacks)
+
+class InspectInterpreter(PushInterpreter):
+    
+    def __init__(self,
+                 instruction_set: Union[InstructionSet, str] = "core",
+                 reset_on_run: bool = True):
+        super().__init__(instruction_set, reset_on_run)
+
+    @tap
+    def run(self,
+            program: Program,
+            inputs: list,
+            print_trace: bool = False) -> list[PushState]:
+        """Run a Push ``Program`` given some inputs and desired output ``PushTypes``.
+
+        The general flow of this method is:
+            1. Create a new push state
+            2. Load the program and inputs.
+            3. If the exec stack is empty, return the outputs.
+            4. Else, pop the exec stack and process the atom.
+            5. Return to step 3.
+
+        Parameters
+        ----------
+        program : Program
+            Program to run.
+        inputs : list
+            A sequence of values to use as inputs to the push program.
+        print_trace : bool
+            If True, each step of program execution will be summarized in stdout.
+
+        Returns
+        -------
+        Sequence
+            A sequence of values pulled from the final push state. May contain
+            pyshgp.utils.Token.no_stack_item if output stacks are empty.
+
+        """
+        push_config = program.signature.push_config
+
+        states: list[PushState] = []
+
+        if self.reset_on_run or self.state is None:
+            self.state = PushState(self.type_library, push_config)
+            self.status = PushInterpreterStatus.normal
+
+        # Setup
+        self.state.load_code(program.code)
+        self.state.load_inputs(inputs)
+        stop_time = time.time() + push_config.runtime_limit
+        steps = 0
+
+        if print_trace:
+            print("Initial State:")
+            self.state.pretty_print()
+
+        # Iterate atom evaluation until entire program is evaluated.
+        while len(self.state["exec"]) > 0:
+            # Stopping conditions
+            if steps > push_config.step_limit:
+                self.status = PushInterpreterStatus.step_limit_exceeded
+                break
+            #if time.time() > stop_time:
+            #    self.status = PushInterpreterStatus.runtime_limit_exceeded
+            #    break
+
+            # Next atom in the program to evaluate.
+            next_atom = self.state["exec"].pop()
+
+            if print_trace:
+                start = time.time()
+                print("\nCurrent Atom: " + str(next_atom))
+
+            # Evaluate atom.
+            old_size = self.state.size()
+            self.evaluate_atom(next_atom, push_config)
+            if self.state.size() > old_size + push_config.growth_cap:
+                self.status = PushInterpreterStatus.growth_cap_exceeded
+                break
+
+            if print_trace:
+                duration = time.time() - start
+                print("Current State (step {step}):".format(step=steps))
+                self.state.pretty_print()
+                print("Step duration:", duration)
+            steps += 1
+
+            states.append(deepcopy(self.state))
+
+        if print_trace:
+            print("Finished program evaluation.")
+
+        return states
