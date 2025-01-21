@@ -1,15 +1,15 @@
 from pyshgp.push.interpreter import InspectInterpreter
 from pyshgp.push.config import PushConfig
 from pyshgp.push.instruction_set import InstructionSet
-from pyshgp.push.program import ProgramSignature, Program
+from pyshgp.push.program import ProgramSignature
 from pyshgp.push.interpreter import InspectInterpreter
 
-from tests.support import load_code, get_program
+from tests.support import get_program
 
-instruction_set = InstructionSet().register_core_by_stack({"int", "float", "bool", "string", "char", "code", "exec", "vector_int", "vector_float", "vector_bool", "vector_string", "vector_char"})
+all_instruction_set = InstructionSet().register_core_by_stack({"int", "float", "bool", "string", "char", "code", "exec", "vector_int", "vector_float", "vector_bool", "vector_string", "vector_char"})
 
 def print_program(name: str, sig: ProgramSignature, inputs = []) -> None:
-    interpreter = InspectInterpreter(instruction_set)
+    interpreter = InspectInterpreter(all_instruction_set)
     prog = get_program(name, sig, interpreter)
     states = interpreter.run(prog, inputs)
     
