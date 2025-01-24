@@ -5,7 +5,7 @@ import json
 from pyshgp.push.atoms import CodeBlock, Closer, Literal, InstructionMeta, Input
 from pyshgp.gp.genome import Genome
 
-all_instruction_set = InstructionSet().register_core_by_stack({"int", "float", "bool", "string", "char", "code", "exec", "vector_int", "vector_float", "vector_bool", "vector_string", "vector_char"})
+all_instruction_set = InstructionSet().register_core_by_stack({"int", "float", "bool", "str", "char", "code", "exec", "vector_int", "vector_float", "vector_bool", "vector_str", "vector_char"})
 
 def _deserialize_atoms(lst, instr_set: InstructionSet):
     type_lib = instr_set.type_library
