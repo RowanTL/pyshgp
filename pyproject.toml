@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "pyshgp"
+version = "0.1.0"
+description = "Push Genetic Programming in Python"
+authors = ["Eddie Pantridge <erp12@hampshire.edu>"]
+license = "MIT"
+homepage = "https://github.com/RowanTL/pyshgp"
+repository = "https://github.com/RowanTL/pyshgp"
+keywords = ["push gp", "genetic programming", "pushgp", "gp", "push"]
+
+# This section is equivalent to `classifiers` in setup.py
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"  # Adjust according to your Python version support
+numpy = ">=1.12.0"
+scipy = ">=0.18.0"
+pandas = ">=0.23.4"
+pyrsistent = ">=0.16.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+
+# [tool.poetry.urls]
+# Add any additional URLs if necessary
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
