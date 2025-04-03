@@ -16,7 +16,6 @@
           python311
           python311Packages.pip
           (vscode-with-extensions.override {
-            vscode = vscodium;
             vscodeExtensions = with vscode-extensions; [
               ms-python.python
             ];
