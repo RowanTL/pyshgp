@@ -15,6 +15,7 @@
         packages = with pkgs; [
           python311
           python311Packages.pip
+          python311Packages.ruff
           (vscode-with-extensions.override {
             vscodeExtensions = with vscode-extensions; [
               ms-python.python
