@@ -24,12 +24,14 @@
           # Add gcc and stdenv for libstdc++
           gcc
           stdenv.cc.cc.lib
+          zlib
         ];
         shellHook = ''
           export SHELL=${pkgs.lib.getExe pkgs.bashInteractive}
           
           # Add libstdc++ to LD_LIBRARY_PATH
-          export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH
+          # export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.zlib}/lib:$LD_LIBRARY_PATH
           
           python -m venv .venv
           source .venv/bin/activate
