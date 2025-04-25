@@ -28,6 +28,7 @@
           python -m venv .venv
           source .venv/bin/activate
           pip install -r requirements-with-dev.txt
+          pip install -e .
         '';
       };
   };
