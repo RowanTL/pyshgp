@@ -21,6 +21,7 @@
               ms-python.python
             ];
           })
+          jetbrains.pycharm-community
         ];
         shellHook = ''
           export SHELL=${pkgs.lib.getExe pkgs.bashInteractive}
