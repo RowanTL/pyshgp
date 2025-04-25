@@ -7,7 +7,8 @@ from tests.support import load_code, load_genome
 def check_translation(program_name: str, interpreter: PushInterpreter):
     genome = load_genome(program_name, interpreter)
     prog = load_code(program_name, interpreter)
-    assert genome_to_code(genome) == prog
+    converted_program = genome_to_code(genome)
+    assert converted_program == prog
 
 
 def check_unary_fn_translation(program_name: str):
