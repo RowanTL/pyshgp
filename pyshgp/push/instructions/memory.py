@@ -50,7 +50,7 @@ def instructions(type_library: PushTypeLibrary):
     i = []
 
     # for push_type in ["int", "float"]:
-    for push_type in ["float"]:
+    """for push_type in ["float"]:
         i.append(MemoryInstruction(
             f"mem_{push_type}_add",
             _mem_add,
@@ -85,6 +85,6 @@ def instructions(type_library: PushTypeLibrary):
             output_stacks=[push_type],
             code_blocks=0,
             docstring=f"Reads in a variable from memory and places it in {push_type} stack"
-        ))
+        ))"""
 
     return i

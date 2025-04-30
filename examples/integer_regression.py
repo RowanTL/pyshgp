@@ -19,7 +19,7 @@ y = np.array([[target_function(x[0], x[1])] for x in X])
 
 instruction_set = (
     InstructionSet()
-    .register_core_by_stack({"float"}, exclude_stacks={"str", "exec", "code"})
+    .register_core_by_stack({"float", "exec"}, exclude_stacks={"str", "code"})
 )
 
 spawner = GeneSpawner(
@@ -43,6 +43,7 @@ if __name__ == '__main__':
         spawner=spawner,
         selector=ep_lex_sel,
         verbose=2,
+        initial_genome_size=(4, 7),
     )
 
     est.fit(X=X, y=y)
