@@ -1,3 +1,28 @@
+# TODO
+
+- Multiple types for memory (float, int, and maybe bool if required)
+- Add stack memory alongside index memory
+- Add sliding window.
+- Look at pypy 3.10 implementation. A 4.4x speed increase sounds really cool.
+- ~~Get updated documentation website running~~
+- Look at using the int stack for indexed memory rather than taking values off of the float stack
+  - Would mandate the use of integer instructions.
+- Add search algorithm documentation to the bottom of https://rowantl.github.io/pyshgp/html/configuration.html
+- Move todo to its own file
+- Implement random down sampling lexicase selection
+
+# Changes
+
+What is changed in this fork?
+
+- Fixed to support python 3.12
+- Added memory, parameters in the memory interpreter 
+
+# Warning
+
+The master branch is not meant to be stable. I am constantly updating this repo with changes that may or may not function.
+Later, when more features are added and more kinks are hammered out, the repo will switch to a more stable release model.
+
 # PyshGP
 
 [![PyPI version](https://badge.fury.io/py/pyshgp.svg)](https://badge.fury.io/py/pyshgp)

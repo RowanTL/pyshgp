@@ -19,7 +19,7 @@ y = np.array([[target_function(x[0], x[1])] for x in X])
 
 instruction_set = (
     InstructionSet()
-    .register_core_by_stack({"int"}, exclude_stacks={"str", "exec", "code"})
+    .register_core_by_stack({"float", "exec"}, exclude_stacks={"str", "code"})
 )
 
 spawner = GeneSpawner(
@@ -27,7 +27,7 @@ spawner = GeneSpawner(
     instruction_set=instruction_set,
     literals=[],
     erc_generators=[
-        lambda: random.randint(0, 10),
+        lambda: float(random.randint(0, 10)),
     ]
 )
 
@@ -42,7 +42,8 @@ if __name__ == '__main__':
         simplification_steps=500,
         spawner=spawner,
         selector=ep_lex_sel,
-        verbose=2
+        verbose=2,
+        initial_genome_size=(4, 7),
     )
 
     est.fit(X=X, y=y)

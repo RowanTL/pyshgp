@@ -5,12 +5,12 @@ from collections import defaultdict
 import numpy as np
 import pandas as pd
 
-from pyshgp.push.interpreter import PushInterpreter, Program
+from pyshgp.push.interpreter import PushInterpreter, Program, MemoryInterpreter
 from pyshgp.tap import tap
 from pyshgp.utils import Token
 
 
-def damerau_levenshtein_distance(a: Union[str, Sequence], b: Union[str, Sequence]) -> int:
+def damerau_levenshtein_distance(a: str | Sequence, b: str | Sequence) -> int:
     """Damerau-Levenshtein Distance that works for both strings and lists.
 
     https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance.
@@ -78,6 +78,8 @@ class Evaluator(ABC):
         self.penalty = penalty
         if interpreter == "default":
             self.interpreter = PushInterpreter()
+        elif interpreter == "memory":
+            self.interpreter = MemoryInterpreter()
         else:
             self.interpreter = interpreter
 
@@ -186,11 +188,21 @@ class DatasetEvaluator(Evaluator):
         """
         super().evaluate(program)
         errors = []
+        is_memory_interpreter = True if isinstance(self.interpreter, MemoryInterpreter) else False
         for ndx in range(self.X.shape[0]):
             inputs = self.X.iloc[ndx].to_list()
             expected = self.y.iloc[ndx].to_list()
             actual = self.interpreter.run(program, inputs)
             errors.append(self.default_error_function(actual, expected))
+            if is_memory_interpreter:
+                if self.interpreter.dementia_amt != 0 and ndx % self.interpreter.dementia_amt == 0:
+                    for index in range(len(self.interpreter.memory)):
+                        self.interpreter.memory[index] = 0
+        
+        if is_memory_interpreter:
+            for index in range(len(self.interpreter.memory)):
+                self.interpreter.memory[index] = 0
+                
         return np.array(errors).flatten()
 
 

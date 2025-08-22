@@ -90,6 +90,54 @@ def _check_is_seq(x, source):
             t=type(x)
         ))
 
+class MemoryInstruction(Instruction):
+    
+    __slots__ = ["name", "f", "input_stacks", "output_stacks", "code_blocks", "docstring"]
+
+    def __init__(self,
+                 name: str,
+                 f: Callable,
+                 input_stacks: Sequence[str],
+                 output_stacks: Sequence[str],
+                 code_blocks: int,
+                 docstring="Write me!"):    
+        super().__init__(name, code_blocks, docstring)
+        self.f = f
+        self.input_stacks = input_stacks
+        self.output_stacks = output_stacks
+
+    def evaluate(self, push_state: PushState, memory_arr: list[float | int], push_config: PushConfig = None) -> PushState:
+        args = push_state.observe_stacks(self.input_stacks)
+        if Token.no_stack_item in args:
+            return push_state
+
+        # https://stackoverflow.com/a/44154660
+        # if float('nan') in args:
+            # push_state.pop_from_stacks(self.input_stacks)
+            # return push_state
+
+        # This is here to make this instruction useless if there
+        # is no memory
+        if not memory_arr:
+            return push_state
+
+        result = self.f(*args, memory_arr=memory_arr)
+        if result is Token.revert:
+            return push_state
+        _check_is_seq(result, self)
+
+        push_state.pop_from_stacks(self.input_stacks)
+        push_state.push_to_stacks(result, self.output_stacks)
+        return push_state
+        
+
+    def required_stacks(self) -> Set[str]:
+        """Return a list of PushType names relevant to the instruction.
+
+        Based on the the instructions input and output types.
+        """
+        return set(self.input_stacks + self.output_stacks) - RESERVED_PSEUDO_STACKS
+
 
 class SimpleInstruction(Instruction):
     """A simple instruction implementation.

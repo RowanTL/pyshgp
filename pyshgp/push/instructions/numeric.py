@@ -4,6 +4,7 @@ import math
 from pyshgp.push.type_library import PushTypeLibrary
 from pyshgp.push.instruction import SimpleInstruction
 from pyshgp.utils import Token
+from math import log, log2, exp, sqrt
 
 
 def _add(a, b):
@@ -82,6 +83,60 @@ def _to_float(x):
     return float(x),
 
 
+def _log2(x):
+    if x == 0:
+        return Token.revert
+    result = log2(abs(x))
+    return log2(abs(x)),
+
+
+def _log_base(x, base):
+    if x == 0 or base == 0 or base == 1 or base == -1:
+        return Token.revert
+    result = log(abs(x), abs(base))
+    return result,
+
+
+def _exp(x):
+    try:
+        result = exp(x)
+    except OverflowError:
+        return Token.revert
+    return result,
+
+
+def _sqrt(x):
+    return sqrt(abs(x)),
+
+
+# There is a bunch of nonsense to deal with mathematically
+# when rasing one float to the power of another
+# Just don't deal with it at all lol
+"""def _pow(x, exponent):
+    try:
+        if exponent < 1 and exponent > 0:
+            x = abs(x)
+        result = x ** exponent
+    except OverflowError:
+        return Token.revert
+    except ZeroDivisionError:
+        # happens when 0 ^ (negative number)
+        return Token.revert
+    if isinstance(result, complex):
+        # not sure this is the best option but will do for now
+        # talk about this in class later.
+        # TODO: Create a fix for this
+        print(f"complex number found, x:{x}, exponent:{exponent}")
+        return Token.revert
+    return result,"""
+
+
+def _inv(x):
+    if x == 0:
+        return Token.revert
+    return 1 / x,
+
+
 def instructions(type_library: PushTypeLibrary):
     """Return all core numeric instructions."""
     i = []
@@ -95,6 +150,61 @@ def instructions(type_library: PushTypeLibrary):
             code_blocks=0,
             docstring="Adds the top two {t}s and pushes the result.".format(t=push_type)
         ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_log2",
+            _log2,
+            input_stacks=[push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes the log base 2 of {push_type}"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_inv",
+            _inv,
+            input_stacks=[push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes the inverse of {push_type}"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_log_base",
+            _log_base,
+            input_stacks=[push_type, push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes the log base # of {push_type}"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_exp",
+            _exp,
+            input_stacks=[push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes e ^ {push_type} and pushes the result"
+        ))
+
+        i.append(SimpleInstruction(
+            f"{push_type}_sqrt",
+            _sqrt,
+            input_stacks=[push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"Takes the sqrt of {push_type} and pushes the result"
+        ))
+
+        """
+       i.append(SimpleInstruction(
+            f"{push_type}_pow",
+            _pow,
+            input_stacks=[push_type, push_type],
+            output_stacks=[push_type],
+            code_blocks=0,
+            docstring=f"{push_type} ^ {push_type}"
+        ))"""
 
         i.append(SimpleInstruction(
             "{t}_sub".format(t=push_type),
